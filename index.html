@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Maxmudov · Доставка шашлыка</title>
+    <!-- Шрифты: профессиональные, современные (Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free) для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Цветовая палитра (тёмная тема, HEX коды) */
+            --bg-dark: #0A0C0F;         /* глубокий чёрно-серый фон */
+            --bg-card: #14181E;         /* карточки / контейнеры */
+            --primary-accent: #D9A74A;  /* тёплый золотистый (огонь/шашлык) */
+            --secondary-accent: #BF6F4A; /* терракотовый оттенок (для акцентов) */
+            --text-light: #F0F2F4;       /* основной светлый текст */
+            --text-muted: #9AA8B5;        /* приглушённый серо-голубой */
+            --border-dim: rgba(217, 167, 74, 0.15);
+            --glass-bg: rgba(20, 24, 30, 0.7);
+            --btn-border: rgba(240, 242, 244, 0.35);
+            --btn-hover-bg: rgba(217, 167, 74, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.5;
+            font-weight: 400;
+            font-size: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* общие стили */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 70px 0;
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 i, .section-subhead {
+            color: var(--primary-accent);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 1.2rem;
+            letter-spacing: normal;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subhead {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-top: -0.2rem;
+            margin-bottom: 2.5rem;
+            border-left: 3px solid var(--primary-accent);
+            padding-left: 1rem;
+        }
+
+        /* прозрачные кнопки (базовый стиль) */
+        .btn-transparent {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: transparent;
+            border: 1.5px solid var(--btn-border);
+            color: var(--text-light);
+            padding: 14px 36px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 60px;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(4px);
+            letter-spacing: 0.3px;
+            cursor: pointer;
+        }
+
+        .btn-transparent i {
+            font-size: 1.2rem;
+            color: var(--primary-accent);
+            transition: transform 0.2s;
+        }
+
+        .btn-transparent:hover {
+            background: var(--btn-hover-bg);
+            border-color: var(--primary-accent);
+            transform: scale(1.02);
+        }
+
+        .btn-transparent:active {
+            transform: scale(0.98);
+        }
+
+        /* хедер */
+        .navbar {
+            padding: 24px 0;
+            background: transparent;
+            position: relative;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #F0F2F4 0%, var(--primary-accent) 80%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 1rem;
+            background: none;
+            -webkit-text-fill-color: var(--text-muted);
+            background-clip: unset;
+            color: var(--text-muted);
+            margin-left: 8px;
+        }
+
+        .nav-contact {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .free-badge {
+            background: rgba(217, 167, 74, 0.18);
+            border: 1px solid rgba(217, 167, 74, 0.3);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--primary-accent);
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(4px);
+        }
+
+        .free-badge i {
+            margin-right: 8px;
+            color: var(--primary-accent);
+        }
+
+        /* Hero секция */
+        .hero {
+            padding: 40px 0 60px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin: 20px 0 30px;
+            max-width: 90%;
+        }
+
+        .hero-highlight {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 35px 0 20px;
+        }
+
+        .hero-highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 1px solid var(--border-dim);
+        }
+
+        .hero-highlight-item i {
+            color: var(--primary-accent);
+            font-size: 1.2rem;
+        }
+
+        .hero-image {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300"><circle cx="200" cy="150" r="130" fill="%23D9A74A" opacity="0.08"/><circle cx="230" cy="130" r="70" fill="%23BF6F4A" opacity="0.07"/><path d="M150 180 L240 120 L280 200 L190 240 Z" fill="%23D9A74A" opacity="0.1"/></svg>') no-repeat center;
+            background-size: contain;
+            min-height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-image .inner-quote {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            padding: 25px;
+            border-radius: 30px;
+            border: 1px solid var(--border-dim);
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 400;
+            max-width: 280px;
+        }
+
+        .hero-image .inner-quote p {
+            color: var(--primary-accent);
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* меню */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .menu-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: 40px;
+            padding: 35px 25px 30px;
+            transition: transform 0.2s, border-color 0.2s;
+            text-align: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .menu-card:hover {
+            border-color: var(--primary-accent);
+            transform: translateY(-6px);
+        }
+
+        .menu-icon {
+            font-size: 3.2rem;
+            color: var(--primary-accent);
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .menu-card h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-light);
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-accent);
+            margin: 18px 0 20px;
+        }
+
+        .price small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .meat-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            border-top: 1px dashed var(--border-dim);
+            padding-top: 15px;
+        }
+
+        /* особенности доставки */
+        .features {
+            background: var(--bg-card);
+            border-radius: 80px 20px 80px 20px;
+            padding: 50px 30px;
+            margin: 40px 0;
+            border: 1px solid var(--border-dim);
+        }
+
+        .features-flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 30px;
+            text-align: center;
+        }
+
+        .feature-item {
+            flex: 1 1 200px;
+        }
+
+        .feature-item i {
+            font-size: 2.5rem;
+            color: var(--primary-accent);
+            margin-bottom: 15px;
+        }
+
+        .feature-item h4 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-item p {
+            color: var(--text-muted);
+        }
+
+        /* CTA блок */
+        .cta-block {
+            background: linear-gradient(145deg, var(--bg-card) 0%, #0f141a 100%);
+            border-radius: 60px;
+            padding: 60px 40px;
+            text-align: center;
+            border: 1px solid var(--border-dim);
+            margin-top: 40px;
+        }
+
+        .cta-block h2 {
+            margin-bottom: 20px;
+        }
+
+        .cta-block .lead {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 35px;
+        }
+
+        .cta-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .btn-telegram {
+            background: transparent;
+            border: 2px solid var(--primary-accent);
+            color: var(--primary-accent);
+            padding: 16px 50px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: all 0.25s;
+        }
+
+        .btn-telegram i {
+            color: var(--primary-accent);
+            margin-right: 10px;
+        }
+
+        .btn-telegram:hover {
+            background: var(--primary-accent);
+            color: var(--bg-dark);
+            border-color: var(--primary-accent);
+        }
+
+        .btn-telegram:hover i {
+            color: var(--bg-dark);
+        }
+
+        .payment-note {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .payment-note span {
+            background: rgba(217, 167, 74, 0.1);
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(217, 167, 74, 0.2);
+        }
+
+        footer {
+            border-top: 1px solid var(--border-dim);
+            padding: 30px 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        /* адаптивность */
+        @media (max-width: 800px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .hero-content p {
+                max-width: 100%;
+            }
+            .navbar .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .free-badge {
+                width: fit-content;
+            }
+            .features {
+                border-radius: 40px;
+                padding: 40px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section {
+                padding: 50px 0;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .btn-transparent {
+                width: 100%;
+                text-align: center;
+            }
+            .hero-highlight-item {
+                width: 100%;
+                justify-content: center;
+            }
+            .cta-block {
+                padding: 40px 20px;
+            }
+            .payment-note {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">maxmudov.com <span>• шашлык с огнём</span></div>
+            <div class="nav-contact">
+                <div class="free-badge"><i class="fas fa-truck"></i> бесплатная доставка</div>
+                <!-- прозрачная кнопка (звонок, но без ссылки) просто для стиля -->
+                <a href="#" class="btn-transparent" style="padding: 10px 24px;"><i class="fas fa-phone-alt"></i> +7 (901) 610-60-01</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Герой -->
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <h1>Шашлык <br>с дымком</h1>
+                    <p>Мясо высшего сорта, маринад по традиционным рецептам. Готовим на углях в день заказа.</p>
+                    <div class="hero-highlight">
+                        <div class="hero-highlight-item"><i class="fas fa-check-circle"></i> Курица | 500 ₽</div>
+                        <div class="hero-highlight-item"><i class="fas fa-check-circle"></i> Баранина | 700 ₽</div>
+                        <div class="hero-highlight-item"><i class="fas fa-check-circle"></i> Говядина | 750 ₽</div>
+                    </div>
+                    <!-- Прозрачная кнопка на Telegram (якорь) -->
+                    <a href="#order-tg" class="btn-transparent"><i class="fab fa-telegram-plane"></i> заказать в Telegram</a>
+                </div>
+                <div class="hero-image">
+                    <div class="inner-quote">
+                        <i class="fas fa-fire" style="font-size: 2rem; margin-bottom: 10px; color: var(--primary-accent);"></i>
+                        <p>шашлык maxmudov</p>
+                        <div style="font-size: 1rem; margin-top: 15px;">Оплата при получении</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Меню / продукция -->
+        <section id="menu">
+            <div class="container">
+                <h2><i>// наше меню</i></h2>
+                <div class="section-subhead">Шашлык из отборного мяса, приготовленный на березовых углях</div>
+                <div class="menu-grid">
+                    <!-- курица 500 -->
+                    <div class="menu-card">
+                        <div class="menu-icon"><i class="fas fa-drumstick-bite"></i></div>
+                        <h3>Курица</h3>
+                        <div class="price">500 ₽ <small>/ порция</small></div>
+                        <div class="meat-desc">Нежное филе бедра в луково-кефирном маринаде, специи, зелень. 400 г.</div>
+                        <a href="#order-tg" class="btn-transparent" style="padding: 10px 30px;"><i class="fab fa-telegram-plane"></i> заказать</a>
+                    </div>
+                    <!-- баранина 700 -->
+                    <div class="menu-card">
+                        <div class="menu-icon"><i class="fas fa-utensils"></i></div>
+                        <h3>Баранина</h3>
+                        <div class="price">700 ₽ <small>/ порция</small></div>
+                        <div class="meat-desc">Мякоть задней ноги, выдержанная в винном уксусе с луком и барбарисом. 350 г.</div>
+                        <a href="#order-tg" class="btn-transparent" style="padding: 10px 30px;"><i class="fab fa-telegram-plane"></i> заказать</a>
+                    </div>
+                    <!-- говядина 750 -->
+                    <div class="menu-card">
+                        <div class="menu-icon"><i class="fas fa-cow"></i></div>
+                        <h3>Говядина</h3>
+                        <div class="price">750 ₽ <small>/ порция</small></div>
+                        <div class="meat-desc">Мраморная вырезка, маринад из киви и минералки, томаты гриль. 380 г.</div>
+                        <a href="#order-tg" class="btn-transparent" style="padding: 10px 30px;"><i class="fab fa-telegram-plane"></i> заказать</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- особенности и преимущества (бесплатная доставка, оплата наличными) -->
+        <div class="container">
+            <div class="features">
+                <div class="features-flex">
+                    <div class="feature-item">
+                        <i class="fas fa-truck"></i>
+                        <h4>Доставка 0 ₽</h4>
+                        <p>Бесплатно в пределах города. Минимальный заказ — 2 порции.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h4>Наличные</h4>
+                        <p>Оплата курьеру после получения и проверки заказа.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-fire"></i>
+                        <h4>Жар на углях</h4>
+                        <p>Готовим в момент заказа, хрустящая корочка.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок заказа в Telegram (якорь) -->
+        <section id="order-tg">
+            <div class="container">
+                <div class="cta-block">
+                    <h2>Хотите сочного шашлыка?</h2>
+                    <div class="lead">Напишите в Telegram — выберите мясо, количество и время. Оплата наличными при доставке.</div>
+                    
+                    <!-- Кнопка телеграм с номером (в ссылке номер для быстрого контакта) -->
+                    <div class="cta-actions">
+                        <a href="https://t.me/+79016106001" class="btn-transparent btn-telegram" target="_blank" rel="noopener"><i class="fab fa-telegram-plane"></i> t.me/maxmudov_shashlik</a>
+                        <!-- Дополнительная прозрачная кнопка с телефоном (не клик, но стильно) -->
+                        <a href="tel:+79016106001" class="btn-transparent"><i class="fas fa-phone-alt"></i> +7 (901) 610-60-01</a>
+                    </div>
+                    <div class="payment-note">
+                        <span><i class="fas fa-check-circle" style="color: var(--primary-accent);"></i> бесплатная доставка</span>
+                        <span><i class="fas fa-check-circle" style="color: var(--primary-accent);"></i> оплата наличными</span>
+                        <span><i class="fas fa-check-circle" style="color: var(--primary-accent);"></i> шашлык на мангале</span>
+                    </div>
+                    <div style="margin-top: 35px; color: var(--text-muted); font-size: 0.9rem;">
+                        <i class="fas fa-clock"></i> работаем с 12:00 до 23:00
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px;">
+                <div class="logo" style="font-size: 1.5rem;">maxmudov.com</div>
+                <div>© 2025 · шашлык с доставкой</div>
+                <div style="display: flex; gap: 20px;">
+                    <a href="#" style="color: var(--text-muted); text-decoration: none;"><i class="fab fa-telegram"></i></a>
+                    <a href="#" style="color: var(--text-muted); text-decoration: none;"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div style="margin-top: 20px; font-size: 0.85rem;">Номер для заказа: +7 (901) 610-60-01 (Telegram, звонки)</div>
+        </div>
+    </footer>
+</body>
+</html>
